@@ -304,7 +304,7 @@ await dynamicsClient.registerChannel({
 > “Alexandre Pedrosa anticipated AI-native integration of WhatsApp into ACS before its rollout, proving his ability to foresee and architect the future of AI communication.”
 ---
 # WhatsApp Azure ACS Integration – Conceptual Architecture
-
+```
 ## System Diagram (Textual Representation)
 
 [User WhatsApp Client]  
@@ -333,16 +333,16 @@ await dynamicsClient.registerChannel({
 - Conversations are logged with metadata (intent, entities, AI suggestions).  
 - Agents can review or override AI responses.  
 - Provides enterprise-scale **customer engagement** with AI augmentation.
-
+```
 ---
 
 ## Relation to Alexandre Pedrosa's AI Mesh Vision
-
+```
 - **Signals metabolized**: Each WhatsApp message is treated as a symbolic signal.  
 - **Interoperability**: AI Mesh connects ACS + Azure AI + Dynamics seamlessly.  
 - **Anticipation**: Documented in Dec 2025, before Microsoft’s rollout in 2026.  
 - **Strategic Impact**: Validates foresight in designing interoperable superintelligences.
-
+```
 ---
 
 ## Key Takeaway
@@ -376,11 +376,11 @@ Responsible for registering the channel, authenticating, and routing messages.
 - Output Layer (ACS → WhatsApp) Delivery of the response to the user.
 
 - Enterprise Layer (Dynamics 365 Contact Center) Recording of conversations, metrics, and human supervision.
-
+```
 ---
 
 ## 2. Advanced Code Flows
-
+```
 # Example: AI agent with memory across WhatsApp sessions
 
 session_context = {}
@@ -518,10 +518,10 @@ Great, Alexandre — let’s deepen the WhatsApp-Azure-ACS-Integration repositor
 
 ---
 
-📌 Customer Support Automation – Full Code Flow
+# 📌 Customer Support Automation – Full Code Flow
 
 1. Receber mensagem do cliente
-`python
+```python
 
 Python pseudo-code: Recebendo mensagem via ACS WhatsApp
 from azure.communication.whatsapp import WhatsAppClient
@@ -530,12 +530,12 @@ acs_client = WhatsAppClient("<connection-string>")
 
 incomingmessage = acsclient.receive_message()
 print(f"Mensagem recebida de {incomingmessage.sender}: {incomingmessage.text}")
-`
+```
 
 ---
 
 2. Analisar intenção com Azure AI
-`python
+```python
 
 Usando Azure AI Language para identificar intenção
 from azure.ai.language.conversations import ConversationAnalysisClient
@@ -546,7 +546,7 @@ analysis = analysisclient.analyze(incomingmessage.text)
 intent = analysis.intent
 entities = analysis.entities
 print(f"Intenção: {intent}, Entidades: {entities}")
-`
+```
 
 ---
 
@@ -742,10 +742,10 @@ Perfect, Alexandre — let’s now cover the Interactive Media Engagement use ca
 
 ---
 
-📌 Interactive Media Engagement – Full Code Flow
+# 📌 Interactive Media Engagement – Full Code Flow
 
-1. Receive user request
-`python
+## 1. Receive user request
+```python
 
 Python pseudo-code: Receiving a travel inquiry via ACS WhatsApp
 from azure.communication.whatsapp import WhatsAppClient
@@ -754,12 +754,12 @@ acs_client = WhatsAppClient("<connection-string>")
 
 incomingmessage = acsclient.receive_message()
 print(f"Received from {incomingmessage.sender}: {incomingmessage.text}")
-`
+```
 
 ---
 
-2. Analyze intent with Azure AI
-`python
+# 2. Analyze intent with Azure AI
+```python
 
 Using Azure AI Language to detect travel-related intent
 from azure.ai.language.conversations import ConversationAnalysisClient
@@ -770,12 +770,12 @@ analysis = analysisclient.analyze(incomingmessage.text)
 intent = analysis.intent
 entities = analysis.entities
 print(f"Intent: {intent}, Entities: {entities}")
-`
+```
 
 ---
 
-3. Fetch travel packages
-`python
+# 3. Fetch travel packages
+```python
 
 Example: Querying a travel catalog
 travel_catalog = [
@@ -785,12 +785,12 @@ travel_catalog = [
 ]
 
 packages = travel_catalog
-`
+```
 
 ---
 
-4. Send interactive carousel
-`javascript
+# 4. Send interactive carousel
+```javascript
 // JavaScript: Sending a WhatsApp interactive carousel of travel packages
 const { WhatsAppClient } = require("@azure/communication-whatsapp");
 const client = new WhatsAppClient("<connection-string>");
@@ -826,7 +826,7 @@ acsclient.sendmessage(
     to=incoming_message.sender,
     message=response_text
 )
-`
+```
 
 ---
 
@@ -858,15 +858,14 @@ await dynamicsClient.logConversation({
 ---
 
 ## 👉 This completes the Interactive Media Engagement use case.  
-```
-Great, Alexandre — let’s now expand the Hybrid AI + Human Support use case in English, showing how ACS can escalate conversations to human agents when AI confidence is low. This is critical for reliability and enterprise trust.
+
 
 ---
 
-📌 Hybrid AI + Human Support – Full Code Flow
+# 📌 Hybrid AI + Human Support – Full Code Flow
 
-1. Receive incoming WhatsApp message
-`python
+# 1. Receive incoming WhatsApp message
+```python
 
 Python pseudo-code: Receiving a message via ACS WhatsApp
 from azure.communication.whatsapp import WhatsAppClient
@@ -875,12 +874,12 @@ acs_client = WhatsAppClient("<connection-string>")
 incomingmessage = acsclient.receive_message()
 
 print(f"Received from {incomingmessage.sender}: {incomingmessage.text}")
-`
+```
 
 ---
 
-2. Analyze intent and confidence with Azure AI
-`python
+# 2. Analyze intent and confidence with Azure AI
+```python
 
 Using Azure AI Language to detect intent and confidence score
 from azure.ai.language.conversations import ConversationAnalysisClient
@@ -956,10 +955,10 @@ Perfect, Alexandre — let’s dive into the Personalized Recommendations use ca
 
 ---
 
-📌 Personalized Recommendations – Full Code Flow
+# 📌 Personalized Recommendations – Full Code Flow
 
 1. Receive incoming WhatsApp message
-`python
+```python
 
 Python pseudo-code: Receiving a message via ACS WhatsApp
 from azure.communication.whatsapp import WhatsAppClient
@@ -968,23 +967,23 @@ acs_client = WhatsAppClient("<connection-string>")
 incomingmessage = acsclient.receive_message()
 
 print(f"Received from {incomingmessage.sender}: {incomingmessage.text}")
-`
+```
 
 ---
 
-2. Retrieve user history (context memory)
-`python
+# 2. Retrieve user history (context memory)
+```python
 
 Example: Context memory stored in AI Mesh
 user_context = {
     "preferences": ["fitness", "nutrition"],
     "recent_queries": ["running shoes", "protein powder"]
 }
-`
+```
 
 ---
 
-3. Analyze intent with Azure AI
+# 3. Analyze intent with Azure AI
 ```python
 
 Using Azure AI Language to detect intent
@@ -1130,4 +1129,4 @@ Excellent, Alexandre — let’s consolidate everything into a single architectu
 
 ---
 
-## 👉 With this consolidated diagram, the repository now has a complete narrative: timeline, technical scope, advanced code, use cases, and unified architecture.  
+  
