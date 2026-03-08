@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ACS-WPP Interplanetary AI Mesh — Post-Quantum Signal Loop</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000010;
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  canvas { display: block; }
+
+  #overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
+  .label {
+    position: absolute;
+    color: #00ffcc;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 0 8px #00ffcc;
+    letter-spacing: 1px;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  #title {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px #0078d4, 0 0 40px #00ffcc;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  #subtitle {
+    position: absolute;
+    top: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #aaaaff;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  #copyright {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #555577;
+    font-size: 8px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  #pq-badge {
+    position: absolute;
+    top: 58px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #0078d4, #7b2fff);
+    color: #fff;
+    font-size: 8px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    letter-spacing: 2px;
+    text-shadow: none;
+    white-space: nowrap;
+    box-shadow: 0 0 12px #7b2fff88;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="overlay">
+  <div id="title">ACS-WPP INTERPLANETARY AI MESH</div>
+  <div id="subtitle">Azure Blockchain 2.0 · Copilot Gen AI · xAI xChat · NASA · SpaceX</div>
+  <div id="pq-badge">🔐 POST-QUANTUM CRYPTOGRAPHY ENABLED</div>
+  <div id="copyright">© 2025-2026 Alexandre Pedrosa — EVP Multimodal AI Engineer at Meta & Microsoft Azure · All Rights Reserved</div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+
+let W, H;
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ─── STARS ────────────────────────────────────────────────────────────────────
+const STARS = Array.from({length: 320}, () => ({
+  x: Math.random(),
+  y: Math.random(),
+  r: Math.random() * 1.2 + 0.2,
+  a: Math.random(),
+  da: (Math.random() - 0.5) * 0.005,
+}));
+
+function drawStars() {
+  STARS.forEach(s => {
+    s.a = Math.max(0.1, Math.min(1, s.a + s.da));
+    if (s.a <= 0.1 || s.a >= 1) s.da *= -1;
+    ctx.beginPath();
+    ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${s.a})`;
+    ctx.fill();
+  });
+}
+
+// ─── NODES ────────────────────────────────────────────────────────────────────
+// Positions are fractions of W/H, set at runtime
+const NODES = {
+  earth:     { label: '🌍  EARTH\nWPP · ACS',       color: '#25D366', glow: '#25D36688' },
+  azure:     { label: '☁️  AZURE\nBlockchain 2.0',   color: '#0078d4', glow: '#0078d488' },
+  copilot:   { label: '🤖  COPILOT\nGen AI',         color: '#7b2fff', glow: '#7b2fff88' },
+  nasa:      { label: '🚀  NASA\nSatellite',         color: '#e8e8e8', glow: '#ffffff44' },
+  spacex:    { label: '⚡  SpaceX\nStarlink',        color: '#cccccc', glow: '#cccccc44' },
+  xai:       { label: '✦  xAI\nxChat',              color: '#ff6600', glow: '#ff660088' },
+  moon:      { label: '🌕  MOON\nNode',              color: '#ddddaa', glow: '#ddddaa44' },
+  mars:      { label: '🔴  MARS\nNode',              color: '#cc4422', glow: '#cc442244' },
+};
+
+function nodePos() {
+  const cx = W / 2, cy = H / 2;
+  const rx = W * 0.38, ry = H * 0.32;
+  return {
+    earth:   { x: cx - rx * 0.85, y: cy + ry * 0.55 },
+    azure:   { x: cx - rx * 0.20, y: cy - ry * 0.80 },
+    copilot: { x: cx + rx * 0.20, y: cy - ry * 0.80 },
+    nasa:    { x: cx + rx * 0.85, y: cy - ry * 0.20 },
+    spacex:  { x: cx + rx * 0.85, y: cy + ry * 0.20 },
+    xai:     { x: cx,             y: cy + ry * 0.10  },
+    moon:    { x: cx - rx * 0.55, y: cy - ry * 0.30 },
+    mars:    { x: cx + rx * 0.10, y: cy + ry * 0.85 },
+  };
+}
+
+// ─── EDGES (signal paths) ─────────────────────────────────────────────────────
+// Each edge: [from, to, color, label, bidirectional]
+const EDGES = [
+  ['earth',   'azure',   '#0078d4', 'ACS → Azure',         false],
+  ['azure',   'copilot', '#7b2fff', 'Blockchain 2.0',       true ],
+  ['copilot', 'nasa',    '#00ffcc', 'PQ-Encrypted Signal',  false],
+  ['nasa',    'spacex',  '#aaaaff', 'Relay',                true ],
+  ['spacex',  'xai',     '#ff6600', 'xAI xChat',            false],
+  ['xai',     'moon',    '#ddddaa', 'PQ → Moon',            false],
+  ['xai',     'mars',    '#cc4422', 'PQ → Mars',            false],
+  ['moon',    'nasa',    '#ddddaa', 'Moon → Satellite',     false],
+  ['mars',    'spacex',  '#cc4422', 'Mars → Satellite',     false],
+  ['azure',   'earth',   '#25D366', 'WPP Modulation',       false],
+];
+
+// ─── SIGNAL PARTICLES ─────────────────────────────────────────────────────────
+const PARTICLES = [];
+let pTimer = 0;
+
+function spawnParticle(fromKey, toKey, color) {
+  PARTICLES.push({ fromKey, toKey, color, t: 0, speed: 0.004 + Math.random() * 0.003 });
+}
+
+function seedParticles() {
+  EDGES.forEach(([f, t, c]) => {
+    spawnParticle(f, t, c);
+    if (EDGES.find(e => e[0] === f && e[1] === t && e[4])) spawnParticle(t, f, c);
+  });
+}
+seedParticles();
+
+// ─── DRAW HELPERS ─────────────────────────────────────────────────────────────
+function drawGlow(x, y, r, color) {
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r * 3.5);
+  g.addColorStop(0, color);
+  g.addColorStop(1, 'transparent');
+  ctx.beginPath();
+  ctx.arc(x, y, r * 3.5, 0, Math.PI * 2);
+  ctx.fillStyle = g;
+  ctx.fill();
+}
+
+function drawNode(key, pos) {
+  const n = NODES[key];
+  const { x, y } = pos;
+  const r = Math.min(W, H) * 0.028;
+
+  drawGlow(x, y, r, n.glow);
+
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.strokeStyle = n.color;
+  ctx.lineWidth = 2;
+  ctx.shadowColor = n.color;
+  ctx.shadowBlur = 18;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Inner fill
+  ctx.beginPath();
+  ctx.arc(x, y, r * 0.6, 0, Math.PI * 2);
+  ctx.fillStyle = n.color + '33';
+  ctx.fill();
+
+  // Label (below node)
+  const lines = n.label.split('\n');
+  ctx.font = `bold ${Math.max(8, W * 0.009)}px Courier New`;
+  ctx.textAlign = 'center';
+  lines.forEach((line, i) => {
+    ctx.fillStyle = n.color;
+    ctx.shadowColor = n.color;
+    ctx.shadowBlur = 8;
+    ctx.fillText(line, x, y + r + 14 + i * 13);
+  });
+  ctx.shadowBlur = 0;
+}
+
+function drawEdge(fromPos, toPos, color) {
+  ctx.beginPath();
+  ctx.moveTo(fromPos.x, fromPos.y);
+
+  // Slight curve
+  const mx = (fromPos.x + toPos.x) / 2 + (toPos.y - fromPos.y) * 0.12;
+  const my = (fromPos.y + toPos.y) / 2 - (toPos.x - fromPos.x) * 0.12;
+  ctx.quadraticCurveTo(mx, my, toPos.x, toPos.y);
+
+  ctx.strokeStyle = color + '33';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+}
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function drawParticle(p, positions) {
+  const fp = positions[p.fromKey];
+  const tp = positions[p.toKey];
+  if (!fp || !tp) return;
+
+  // Quadratic bezier point
+  const mx = (fp.x + tp.x) / 2 + (tp.y - fp.y) * 0.12;
+  const my = (fp.y + tp.y) / 2 - (tp.x - fp.x) * 0.12;
+  const t  = p.t;
+  const x  = (1-t)*(1-t)*fp.x + 2*(1-t)*t*mx + t*t*tp.x;
+  const y  = (1-t)*(1-t)*fp.y + 2*(1-t)*t*my + t*t*tp.y;
+
+  // Tail
+  const t2 = Math.max(0, t - 0.06);
+  const tx  = (1-t2)*(1-t2)*fp.x + 2*(1-t2)*t2*mx + t2*t2*tp.x;
+  const ty  = (1-t2)*(1-t2)*fp.y + 2*(1-t2)*t2*my + t2*t2*tp.y;
+
+  const grad = ctx.createLinearGradient(tx, ty, x, y);
+  grad.addColorStop(0, 'transparent');
+  grad.addColorStop(1, p.color);
+
+  ctx.beginPath();
+  ctx.moveTo(tx, ty);
+  ctx.lineTo(x, y);
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = p.color;
+  ctx.shadowBlur = 12;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Head dot
+  ctx.beginPath();
+  ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+  ctx.fillStyle = p.color;
+  ctx.shadowColor = p.color;
+  ctx.shadowBlur = 16;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+// ─── ORBIT RING ───────────────────────────────────────────────────────────────
+let orbitAngle = 0;
+function drawOrbitRing() {
+  const cx = W / 2, cy = H / 2;
+  const rx = W * 0.42, ry = H * 0.36;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+  ctx.strokeStyle = '#0078d422';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 8]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Orbiting dot
+  const ox = cx + rx * Math.cos(orbitAngle);
+  const oy = cy + ry * Math.sin(orbitAngle);
+  ctx.beginPath();
+  ctx.arc(ox, oy, 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#00ffcc';
+  ctx.shadowColor = '#00ffcc';
+  ctx.shadowBlur = 14;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  orbitAngle += 0.008;
+}
+
+// ─── MAIN LOOP ────────────────────────────────────────────────────────────────
+let frame = 0;
+function loop() {
+  requestAnimationFrame(loop);
+  ctx.clearRect(0, 0, W, H);
+
+  // Background gradient
+  const bg = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W,H)*0.7);
+  bg.addColorStop(0, '#00001a');
+  bg.addColorStop(1, '#000008');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  drawStars();
+  drawOrbitRing();
+
+  const positions = nodePos();
+
+  // Draw edges
+  EDGES.forEach(([f, t, c]) => {
+    drawEdge(positions[f], positions[t], c);
+  });
+
+  // Update & draw particles
+  pTimer++;
+  if (pTimer % 60 === 0) {
+    const [f, t, c] = EDGES[Math.floor(Math.random() * EDGES.length)];
+    spawnParticle(f, t, c);
+  }
+
+  for (let i = PARTICLES.length - 1; i >= 0; i--) {
+    const p = PARTICLES[i];
+    p.t += p.speed;
+    if (p.t >= 1) {
+      PARTICLES.splice(i, 1);
+      // Respawn on a random edge
+      const [f, t, c] = EDGES[Math.floor(Math.random() * EDGES.length)];
+      spawnParticle(f, t, c);
+    } else {
+      drawParticle(p, positions);
+    }
+  }
+
+  // Draw nodes on top
+  Object.keys(NODES).forEach(key => drawNode(key, positions[key]));
+
+  // Central HUD
+  ctx.font = `bold ${Math.max(9, W * 0.008)}px Courier New`;
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#0078d466';
+  ctx.fillText('[ AZURE BLOCKCHAIN 2.0 · IMMUTABLE SIGNAL LAYER ]', W/2, H/2 + 4);
+
+  frame++;
+}
+
+loop();
+</script>
+</body>
+</html>

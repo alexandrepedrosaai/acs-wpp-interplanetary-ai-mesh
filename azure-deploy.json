@@ -1,0 +1,141 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "acrName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Azure Container Registry."
+            }
+        },
+        "acrSku": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "Standard",
+                "Premium"
+            ],
+            "metadata": {
+                "description": "SKU of the Azure Container Registry."
+            }
+        },
+        "containerName": {
+            "type": "string",
+            "defaultValue": "acs-wpp-interplanetary-mesh",
+            "metadata": {
+                "description": "Name of the container instance."
+            }
+        },
+        "imageName": {
+            "type": "string",
+            "defaultValue": "acs-wpp-mesh",
+            "metadata": {
+                "description": "Name of the container image."
+            }
+        },
+        "imageTag": {
+            "type": "string",
+            "defaultValue": "latest",
+            "metadata": {
+                "description": "Tag of the container image."
+            }
+        },
+        "cpuCores": {
+            "type": "int",
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Number of CPU cores for the container."
+            }
+        },
+        "memoryInGb": {
+            "type": "int",
+            "defaultValue": 2,
+            "metadata": {
+                "description": "Memory in GB for the container."
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ContainerRegistry/registries",
+            "apiVersion": "2023-07-01",
+            "name": "[parameters('acrName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "[parameters('acrSku')]"
+            },
+            "properties": {
+                "adminUserEnabled": true
+            }
+        },
+        {
+            "type": "Microsoft.ContainerInstance/containerGroups",
+            "apiVersion": "2023-05-01",
+            "name": "[parameters('containerName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ContainerRegistry/registries', parameters('acrName'))]"
+            ],
+            "properties": {
+                "containers": [
+                    {
+                        "name": "[parameters('containerName')]",
+                        "properties": {
+                            "image": "[concat(parameters('acrName'), '.azurecr.io/', parameters('imageName'), ':', parameters('imageTag'))]",
+                            "ports": [
+                                {
+                                    "port": 80
+                                },
+                                {
+                                    "port": 443
+                                },
+                                {
+                                    "port": 8080
+                                },
+                                {
+                                    "port": 3000
+                                }
+                            ],
+                            "resources": {
+                                "requests": {
+                                    "cpu": "[parameters('cpuCores')]",
+                                    "memoryInGB": "[parameters('memoryInGb')]"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "osType": "Linux",
+                "imageRegistryCredentials": [
+                    {
+                        "server": "[concat(parameters('acrName'), '.azurecr.io')]",
+                        "username": "[parameters('acrName')]",
+                        "password": "[listCredentials(resourceId('Microsoft.ContainerRegistry/registries', parameters('acrName')), '2023-07-01').passwords[0].value]"
+                    }
+                ],
+                "ipAddress": {
+                    "type": "Public",
+                    "ports": [
+                        {
+                            "protocol": "tcp",
+                            "port": 80
+                        },
+                        {
+                            "protocol": "tcp",
+                            "port": 443
+                        },
+                        {
+                            "protocol": "tcp",
+                            "port": 8080
+                        },
+                        {
+                            "protocol": "tcp",
+                            "port": 3000
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

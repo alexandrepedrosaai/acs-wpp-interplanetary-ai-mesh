@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  acs-wpp-mesh:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acs-wpp-interplanetary-mesh
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+    environment:
+      - AZURE_SUBSCRIPTION_ID=f7fc86dd-bd9f-43a6-80a4-0bb6cab950ec
+      - AZURE_TENANT_ID=${AZURE_TENANT_ID}
+      - AZURE_CLIENT_ID=${AZURE_CLIENT_ID}
+      - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
+      - ACS_CONNECTION_STRING=${ACS_CONNECTION_STRING}
+      - WHATSAPP_BUSINESS_NUMBER=${WHATSAPP_BUSINESS_NUMBER}
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - mesh-network
+
+networks:
+  mesh-network:
+    driver: bridge

@@ -1,0 +1,66 @@
+name: Build and Deploy to Azure Container Registry
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  ACR_NAME: acswppmesh1771568067
+  IMAGE_NAME: acs-wpp-mesh
+  RESOURCE_GROUP: acs-wpp-mesh-rg
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Log in to Azure Container Registry
+      run: |
+        az acr login --name ${{ env.ACR_NAME }}
+    
+    - name: Build and push Docker image
+      run: |
+        docker build -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+                     -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest .
+        docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest
+    
+    - name: Deploy to Azure Container Instances
+      run: |
+        az container create \
+          --resource-group ${{ env.RESOURCE_GROUP }} \
+          --name acs-wpp-mesh-container \
+          --image ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest \
+          --registry-login-server ${{ env.ACR_NAME }}.azurecr.io \
+          --registry-username ${{ secrets.ACR_USERNAME }} \
+          --registry-password ${{ secrets.ACR_PASSWORD }} \
+          --dns-name-label acs-wpp-mesh-${{ github.run_number }} \
+          --ports 80 443 8080 3000 \
+          --cpu 1 \
+          --memory 2 \
+          --environment-variables \
+            AZURE_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }} \
+            ACS_CONNECTION_STRING=${{ secrets.ACS_CONNECTION_STRING }} \
+            WHATSAPP_BUSINESS_NUMBER=${{ secrets.WHATSAPP_BUSINESS_NUMBER }} \
+          --restart-policy OnFailure
+    
+    - name: Get container IP
+      run: |
+        CONTAINER_IP=$(az container show \
+          --resource-group ${{ env.RESOURCE_GROUP }} \
+          --name acs-wpp-mesh-container \
+          --query "ipAddress.ip" \
+          --output tsv)
+        echo "Container deployed at IP: $CONTAINER_IP"
+        echo "CONTAINER_IP=$CONTAINER_IP" >> $GITHUB_ENV

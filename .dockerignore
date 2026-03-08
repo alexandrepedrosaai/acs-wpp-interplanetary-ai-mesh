@@ -1,0 +1,47 @@
+# Git files
+.git
+.gitignore
+.github
+
+# Documentation
+README.md
+*.md
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Build outputs
+bin/
+obj/
+dist/
+build/
+*.egg-info/
+
+# Environment files
+.env
+.env.local
+*.log
+
+# Test files
+test/
+tests/
+*.test.js
+*.spec.js

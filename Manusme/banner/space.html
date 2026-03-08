@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>ACS-WPP Interplanetary AI Mesh — Post-Quantum Gravitational Signal Loop</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000005; overflow:hidden; width:100vw; height:100vh; font-family:'Courier New',monospace; }
+canvas#c { display:block; position:absolute; top:0; left:0; }
+#ui { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+
+#title {
+  position:absolute; top:16px; left:50%; transform:translateX(-50%);
+  color:#fff; font-size:15px; font-weight:bold; letter-spacing:4px;
+  text-shadow:0 0 20px #0af, 0 0 50px #07f; white-space:nowrap; text-align:center;
+}
+#subtitle {
+  position:absolute; top:38px; left:50%; transform:translateX(-50%);
+  color:#88ccff; font-size:8px; letter-spacing:2px; white-space:nowrap;
+}
+#pq {
+  position:absolute; top:56px; left:50%; transform:translateX(-50%);
+  background:linear-gradient(90deg,#0078d4cc,#7b2fffcc);
+  color:#fff; font-size:8px; padding:2px 14px; border-radius:20px;
+  letter-spacing:2px; white-space:nowrap;
+}
+#logos {
+  position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+  display:flex; gap:24px; align-items:center;
+}
+.lw { display:flex; flex-direction:column; align-items:center; gap:3px; }
+.lw img { height:18px; opacity:0.5; filter:brightness(10) saturate(0) contrast(1.2); }
+.lw span { color:#ffffff44; font-size:6px; letter-spacing:1px; }
+.lw .m { color:#00ffcc88; font-size:16px; font-weight:bold; line-height:1; }
+
+#log {
+  position:absolute; right:14px; top:50%; transform:translateY(-50%);
+  color:#00ffcc66; font-size:7px; line-height:2; letter-spacing:1px; text-align:right;
+}
+#copyright {
+  position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
+  color:#ffffff22; font-size:7px; letter-spacing:1px; white-space:nowrap;
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">
+  <div id="title">ACS-WPP INTERPLANETARY AI MESH</div>
+  <div id="subtitle">AZURE BLOCKCHAIN 2.0 · COPILOT GEN AI · xAI xCHAT · NASA · SPACEX · POST-QUANTUM CRYPTOGRAPHY</div>
+  <div id="pq">🔐 GRAVITATIONAL POST-QUANTUM SIGNAL PROPAGATION ACTIVE</div>
+
+  <div id="logos">
+    <div class="lw"><img src="logos/meta.png" alt="Meta"/><span>META WPP</span></div>
+    <div class="lw"><img src="logos/nasa.png" alt="NASA"/><span>NASA</span></div>
+    <div class="lw"><img src="logos/spacex.png" alt="SpaceX"/><span>SPACEX</span></div>
+    <div class="lw"><img src="logos/azure.jpg" alt="Azure"/><span>AZURE 2.0</span></div>
+    <div class="lw"><img src="logos/xai.png" alt="xAI"/><span>xAI xCHAT</span></div>
+    <div class="lw"><span class="m">M</span><span>MANUS</span></div>
+  </div>
+
+  <div id="log">
+    <div>🌍 EARTH · WPP · ACS</div>
+    <div>☁️ AZURE BLOCKCHAIN 2.0</div>
+    <div>🛰️ NASA SATELLITE</div>
+    <div>⚡ SPACEX STARLINK</div>
+    <div>✦ xAI xCHAT RECEPTOR</div>
+    <div>🌕 MOON NODE</div>
+    <div>🔴 MARS NODE</div>
+    <div style="color:#ff660088;margin-top:4px;">CRYSTALS-KYBER-1024 ✓</div>
+    <div style="color:#ff660088;">DILITHIUM-5 ✓</div>
+    <div style="color:#7b2fff88;margin-top:4px;">IMMUTABLE LEDGER ✓</div>
+  </div>
+
+  <div id="copyright">© 2025-2026 Alexandre Pedrosa · EVP Multimodal AI Engineer at Meta & Microsoft Azure · All Rights Reserved</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('c'), antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = false;
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.1, 8000);
+camera.position.set(0, 40, 180);
+camera.lookAt(0, 0, 0);
+
+// ── LIGHTS ──────────────────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0x112244, 1.2));
+const sun = new THREE.DirectionalLight(0xfff8e0, 2.5);
+sun.position.set(500, 200, 300);
+scene.add(sun);
+
+// ── STARS ───────────────────────────────────────────────────────────────────
+{
+  const n = 10000, pos = new Float32Array(n*3), col = new Float32Array(n*3);
+  for (let i=0;i<n;i++) {
+    const r=1500+Math.random()*3000, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
+    pos[i*3]=r*Math.sin(ph)*Math.cos(th); pos[i*3+1]=r*Math.sin(ph)*Math.sin(th); pos[i*3+2]=r*Math.cos(ph);
+    const w=0.6+Math.random()*0.4; col[i*3]=w; col[i*3+1]=w; col[i*3+2]=w+0.1*Math.random();
+  }
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  g.setAttribute('color',new THREE.BufferAttribute(col,3));
+  scene.add(new THREE.Points(g,new THREE.PointsMaterial({size:0.7,vertexColors:true,transparent:true,opacity:0.85})));
+}
+
+// ── TEXTURE FACTORY ─────────────────────────────────────────────────────────
+function noiseTex(base, hi, sz=512) {
+  const cv=document.createElement('canvas'); cv.width=cv.height=sz;
+  const ctx=cv.getContext('2d'), d=ctx.createImageData(sz,sz);
+  for(let i=0;i<sz*sz;i++){
+    const n=Math.random(), n2=Math.random()*0.3;
+    d.data[i*4]  =Math.min(255,base[0]+(hi[0]-base[0])*n+n2*30);
+    d.data[i*4+1]=Math.min(255,base[1]+(hi[1]-base[1])*n+n2*20);
+    d.data[i*4+2]=Math.min(255,base[2]+(hi[2]-base[2])*n+n2*10);
+    d.data[i*4+3]=255;
+  }
+  ctx.putImageData(d,0,0);
+  return new THREE.CanvasTexture(cv);
+}
+
+// ── EARTH ───────────────────────────────────────────────────────────────────
+const EARTH_R = 12;
+const earthMesh = new THREE.Mesh(
+  new THREE.SphereGeometry(EARTH_R,64,64),
+  new THREE.MeshPhongMaterial({ map:noiseTex([8,35,110],[25,110,55]), shininess:35, specular:new THREE.Color(0x1a3366) })
+);
+earthMesh.position.set(-65,0,0);
+scene.add(earthMesh);
+
+// Thin atmosphere
+const atm = new THREE.Mesh(
+  new THREE.SphereGeometry(EARTH_R*1.06,32,32),
+  new THREE.MeshPhongMaterial({ color:0x3366ff, transparent:true, opacity:0.07, side:THREE.FrontSide, depthWrite:false })
+);
+earthMesh.add(atm);
+
+// Cloud layer
+const clouds = new THREE.Mesh(
+  new THREE.SphereGeometry(EARTH_R*1.02,48,48),
+  new THREE.MeshPhongMaterial({ map:noiseTex([200,210,220],[255,255,255]), transparent:true, opacity:0.25, depthWrite:false })
+);
+earthMesh.add(clouds);
+
+// ── MOON ────────────────────────────────────────────────────────────────────
+const MOON_R = 3.5;
+const moonMesh = new THREE.Mesh(
+  new THREE.SphereGeometry(MOON_R,32,32),
+  new THREE.MeshPhongMaterial({ map:noiseTex([140,135,120],[180,175,160]), shininess:4 })
+);
+scene.add(moonMesh);
+
+// Moon orbit ring
+const moonOrbit = new THREE.Mesh(
+  new THREE.TorusGeometry(42,0.1,8,100),
+  new THREE.MeshBasicMaterial({ color:0xffffff, transparent:true, opacity:0.06 })
+);
+moonOrbit.rotation.x = Math.PI/2;
+moonOrbit.position.copy(earthMesh.position);
+scene.add(moonOrbit);
+
+// ── MARS ────────────────────────────────────────────────────────────────────
+const MARS_R = 7;
+const marsMesh = new THREE.Mesh(
+  new THREE.SphereGeometry(MARS_R,48,48),
+  new THREE.MeshPhongMaterial({ map:noiseTex([150,55,25],[180,80,40]), shininess:8 })
+);
+marsMesh.position.set(110,-8,-60);
+scene.add(marsMesh);
+
+// ── SATELLITE FACTORY ───────────────────────────────────────────────────────
+function makeSat(panelColor=0x4488ff, scale=1) {
+  const g=new THREE.Group();
+  g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(2,0.8,0.8),new THREE.MeshPhongMaterial({color:0x999aaa,shininess:90})),{}));
+  [-1,1].forEach(s=>{
+    const p=new THREE.Mesh(new THREE.BoxGeometry(3,0.06,1),new THREE.MeshPhongMaterial({color:panelColor,shininess:120,emissive:new THREE.Color(panelColor).multiplyScalar(0.1)}));
+    p.position.x=s*2.4; g.add(p);
+  });
+  const a=new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,1.5,6),new THREE.MeshBasicMaterial({color:0xffffff}));
+  a.position.y=0.9; g.add(a);
+  g.scale.setScalar(scale);
+  return g;
+}
+
+const nasaSat = makeSat(0x2255cc, 1.1);
+scene.add(nasaSat);
+
+const starlinkSats = Array.from({length:8},(_,i)=>{ const s=makeSat(0xffffff,0.55); scene.add(s); return s; });
+
+// ── xAI NODE ────────────────────────────────────────────────────────────────
+const xaiNode = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(4,1),
+  new THREE.MeshPhongMaterial({ color:0xff5500, emissive:0xff2200, emissiveIntensity:0.6, shininess:120 })
+);
+xaiNode.position.set(50,25,30);
+scene.add(xaiNode);
+const xaiWire = new THREE.Mesh(xaiNode.geometry.clone(), new THREE.MeshBasicMaterial({color:0xff8800,wireframe:true,transparent:true,opacity:0.25}));
+xaiNode.add(xaiWire);
+
+// ── AZURE NODE ──────────────────────────────────────────────────────────────
+const azureNode = new THREE.Mesh(
+  new THREE.OctahedronGeometry(4.5,0),
+  new THREE.MeshPhongMaterial({ color:0x0088ff, emissive:0x0044cc, emissiveIntensity:0.5, shininess:100 })
+);
+azureNode.position.set(-18,32,15);
+scene.add(azureNode);
+const azureWire = new THREE.Mesh(azureNode.geometry.clone(), new THREE.MeshBasicMaterial({color:0x00aaff,wireframe:true,transparent:true,opacity:0.3}));
+azureNode.add(azureWire);
+
+// ── SPACEX ROCKET ───────────────────────────────────────────────────────────
+const rocketGroup = new THREE.Group();
+rocketGroup.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.5,4,10),new THREE.MeshPhongMaterial({color:0xddddee,shininess:100})),{}));
+const nose=new THREE.Mesh(new THREE.ConeGeometry(0.35,1.5,10),new THREE.MeshPhongMaterial({color:0xffffff,shininess:80}));
+nose.position.y=2.75; rocketGroup.add(nose);
+const exh=new THREE.Mesh(new THREE.ConeGeometry(0.4,2.5,8),new THREE.MeshBasicMaterial({color:0xff7700,transparent:true,opacity:0.75}));
+exh.rotation.z=Math.PI; exh.position.y=-3.2; rocketGroup.add(exh);
+scene.add(rocketGroup);
+
+// ── SPRITE LABEL FACTORY ────────────────────────────────────────────────────
+function makeSprite(text, color='#00ffcc', w=256, h=64) {
+  const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+  const ctx=cv.getContext('2d');
+  ctx.font=`bold ${h*0.38}px Courier New`;
+  ctx.fillStyle=color; ctx.textAlign='center';
+  ctx.shadowColor=color; ctx.shadowBlur=12;
+  ctx.fillText(text, w/2, h*0.68);
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(cv),transparent:true,depthWrite:false}));
+  sp.scale.set(w/12, h/12, 1);
+  return sp;
+}
+
+const lblEarth  = makeSprite('🌍 EARTH · WPP · ACS','#25D366');  lblEarth.position.set(-65,-18,0); scene.add(lblEarth);
+const lblMoon   = makeSprite('🌕 MOON','#ddddaa',128,48);         scene.add(lblMoon);
+const lblMars   = makeSprite('🔴 MARS NODE','#cc4422');           lblMars.position.set(110,-20,-60); scene.add(lblMars);
+const lblXai    = makeSprite('✦ xAI xCHAT','#ff6600');           lblXai.position.set(50,14,30); scene.add(lblXai);
+const lblAzure  = makeSprite('☁️ AZURE 2.0','#0088ff',256,64);   lblAzure.position.set(-18,42,15); scene.add(lblAzure);
+const lblNasa   = makeSprite('🛰️ NASA SAT','#aaaaff',192,48);    scene.add(lblNasa);
+
+// ── BEZIER HELPER ────────────────────────────────────────────────────────────
+function bz(p0,p1,p2,t) {
+  const u=1-t;
+  return new THREE.Vector3(u*u*p0.x+2*u*t*p1.x+t*t*p2.x, u*u*p0.y+2*u*t*p1.y+t*t*p2.y, u*u*p0.z+2*u*t*p1.z+t*t*p2.z);
+}
+function midCtrl(a,b,lift=0.4,twist=0) {
+  const m=new THREE.Vector3().addVectors(a,b).multiplyScalar(0.5);
+  m.y+=a.distanceTo(b)*lift;
+  m.x+=twist;
+  return m;
+}
+
+// ── STATIC ARC LINES ────────────────────────────────────────────────────────
+const ARCS = [
+  { from:()=>earthMesh.position, to:()=>azureNode.position, color:0x25D366 },
+  { from:()=>azureNode.position, to:()=>nasaSat.position,   color:0x0088ff },
+  { from:()=>nasaSat.position,   to:()=>xaiNode.position,   color:0x00ffcc },
+  { from:()=>xaiNode.position,   to:()=>moonMesh.position,  color:0xddddaa },
+  { from:()=>xaiNode.position,   to:()=>marsMesh.position,  color:0xff4422 },
+  { from:()=>moonMesh.position,  to:()=>nasaSat.position,   color:0xddddaa },
+  { from:()=>marsMesh.position,  to:()=>starlinkSats[0].position, color:0xff6622 },
+  { from:()=>azureNode.position, to:()=>earthMesh.position, color:0x7b2fff },
+];
+
+const arcLines = ARCS.map(a => {
+  const pts=[];
+  const f=a.from(), t=a.to(), m=midCtrl(f,t,0.35,(Math.random()-.5)*15);
+  for(let i=0;i<=80;i++) pts.push(bz(f,m,t,i/80));
+  const g=new THREE.BufferGeometry().setFromPoints(pts);
+  const l=new THREE.Line(g,new THREE.LineBasicMaterial({color:a.color,transparent:true,opacity:0.15}));
+  scene.add(l);
+  return l;
+});
+
+// ── SIGNAL PARTICLES ────────────────────────────────────────────────────────
+const sigParts = ARCS.map(a => Array.from({length:10},(_,i)=>({
+  t: i/10, speed:0.005+Math.random()*0.004, arc:a,
+  mesh: (()=>{
+    const m=new THREE.Mesh(new THREE.SphereGeometry(0.5,6,6),new THREE.MeshBasicMaterial({color:a.color,transparent:true,opacity:0.9}));
+    scene.add(m); return m;
+  })()
+}))).flat();
+
+// ── GRAVITATIONAL WAVE RINGS ─────────────────────────────────────────────────
+const gWaves = [];
+const WAVE_SOURCES = [
+  {pos:()=>earthMesh.position, color:0x25D366},
+  {pos:()=>azureNode.position, color:0x0088ff},
+  {pos:()=>xaiNode.position,   color:0xff5500},
+  {pos:()=>marsMesh.position,  color:0xcc4422},
+  {pos:()=>moonMesh.position,  color:0xddddaa},
+];
+let waveT=0, waveI=0;
+
+function spawnWave(pos, color) {
+  // Create 3 concentric rings with slight tilt variation
+  for (let k=0; k<3; k++) {
+    const geo = new THREE.TorusGeometry(0.5, 0.18, 8, 80);
+    const mat = new THREE.MeshBasicMaterial({color, transparent:true, opacity:0.7, side:THREE.DoubleSide});
+    const ring = new THREE.Mesh(geo, mat);
+    ring.position.copy(pos);
+    ring.rotation.x = Math.PI/2 + (Math.random()-.5)*0.5;
+    ring.rotation.z = (Math.random()-.5)*0.5;
+    scene.add(ring);
+    gWaves.push({ mesh:ring, r:0.5+k*2, maxR:60+k*10, speed:0.5+k*0.15+Math.random()*0.2, origin:pos.clone() });
+  }
+}
+
+// ── CAMERA ORBIT ─────────────────────────────────────────────────────────────
+let camA = 0, rocketT = 0;
+let clock = 0;
+
+function animate() {
+  requestAnimationFrame(animate);
+  clock += 0.004;
+
+  // Camera slow cinematic orbit
+  camA += 0.001;
+  camera.position.x = Math.sin(camA) * 190;
+  camera.position.z = Math.cos(camA) * 190;
+  camera.position.y = 35 + Math.sin(camA * 0.5) * 25;
+  camera.lookAt(0, 5, 0);
+
+  // Earth
+  earthMesh.rotation.y += 0.002;
+  clouds.rotation.y += 0.0015;
+
+  // Moon orbit
+  const ma = clock * 0.35;
+  moonMesh.position.set(
+    earthMesh.position.x + Math.cos(ma)*42,
+    earthMesh.position.y + Math.sin(ma*0.4)*6,
+    earthMesh.position.z + Math.sin(ma)*42
+  );
+  moonMesh.rotation.y += 0.001;
+  lblMoon.position.set(moonMesh.position.x, moonMesh.position.y-7, moonMesh.position.z);
+
+  // Mars
+  marsMesh.rotation.y += 0.0015;
+
+  // NASA sat orbit
+  const na = clock * 1.1;
+  nasaSat.position.set(
+    earthMesh.position.x + Math.cos(na)*26,
+    earthMesh.position.y + Math.sin(na*0.6)*8,
+    earthMesh.position.z + Math.sin(na)*26
+  );
+  nasaSat.rotation.y += 0.05;
+  lblNasa.position.set(nasaSat.position.x, nasaSat.position.y+5, nasaSat.position.z);
+
+  // Starlink constellation
+  starlinkSats.forEach((s,i) => {
+    const a = clock*0.9 + (i/8)*Math.PI*2;
+    const inc = (i%3)*0.5;
+    s.position.set(
+      earthMesh.position.x + Math.cos(a)*22,
+      earthMesh.position.y + Math.sin(a+inc)*10,
+      earthMesh.position.z + Math.sin(a)*22
+    );
+    s.rotation.y += 0.06;
+  });
+
+  // Azure node pulse
+  azureNode.rotation.y += 0.025;
+  azureNode.rotation.x += 0.012;
+  const ap = 1 + 0.07*Math.sin(clock*3.5);
+  azureNode.scale.setScalar(ap);
+
+  // xAI pulse + wobble
+  xaiNode.rotation.y += 0.018;
+  const xp = 1 + 0.1*Math.sin(clock*2.8);
+  xaiNode.scale.setScalar(xp);
+
+  // Rocket launch
+  rocketT = (rocketT + 0.004) % 1;
+  const rf = earthMesh.position.clone();
+  const rt = nasaSat.position.clone();
+  const rm = midCtrl(rf, rt, 0.5, 10);
+  const rpos = bz(rf, rm, rt, rocketT);
+  rocketGroup.position.copy(rpos);
+  const rnext = bz(rf, rm, rt, Math.min(rocketT+0.01,1));
+  rocketGroup.lookAt(rnext);
+  exh.material.opacity = 0.5 + 0.3*Math.sin(clock*25);
+
+  // Gravitational waves
+  waveT++;
+  if (waveT % 40 === 0) {
+    const src = WAVE_SOURCES[waveI % WAVE_SOURCES.length];
+    spawnWave(src.pos(), src.color);
+    waveI++;
+  }
+  for (let i=gWaves.length-1; i>=0; i--) {
+    const w = gWaves[i];
+    w.r += w.speed;
+    w.mesh.scale.setScalar(w.r);
+    w.mesh.material.opacity = Math.max(0, 0.65*(1 - w.r/w.maxR));
+    if (w.r >= w.maxR) { scene.remove(w.mesh); gWaves.splice(i,1); }
+  }
+
+  // Signal particles
+  sigParts.forEach(p => {
+    p.t = (p.t + p.speed) % 1;
+    const f = p.arc.from(), t2 = p.arc.to();
+    const m = midCtrl(f, t2, 0.35);
+    const pos = bz(f, m, t2, p.t);
+    p.mesh.position.copy(pos);
+    const gs = 0.35 + 0.25*Math.sin(p.t*Math.PI);
+    p.mesh.scale.setScalar(gs);
+    p.mesh.material.opacity = 0.5 + 0.5*Math.sin(p.t*Math.PI);
+  });
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+window.addEventListener('resize', () => {
+  renderer.setSize(innerWidth, innerHeight);
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+});
+</script>
+</body>
+</html>
