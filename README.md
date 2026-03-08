@@ -1,12 +1,23 @@
 <!-- ANIMATED BANNER — Post-Quantum Interplanetary Signal Loop -->
 <p align="center">
-  <a href="https://alexandrepedrosaai.github.io/acs-wpp-interplanetary-ai-mesh/Manusme/banner/interplanetary_banner.html" target="_blank">
-    <img src="https://raw.githubusercontent.com/alexandrepedrosaai/acs-wpp-interplanetary-ai-mesh/main/Manusme/banner/preview.svg" alt="ACS-WPP Interplanetary AI Mesh — Post-Quantum Signal Loop" width="100%"/>
+  <a href="https://alexandrepedrosaai.github.io/acs-wpp-interplanetary-ai-mesh/" target="_blank">
+    <img src="Manusme/banner/interplanetary_animation.gif" alt="ACS-WPP Interplanetary AI Mesh — Post-Quantum Gravitational Signal Loop" width="100%"/>
   </a>
 </p>
 
-> **🌐 [▶ View Live Animated Banner — Interplanetary Post-Quantum Signal Loop](Manusme/banner/interplanetary_banner.html)**  
-> *Earth (WPP · ACS) → Azure Blockchain 2.0 → NASA · SpaceX Satellites → xAI xChat → Moon → Mars → back to Earth*
+<p align="center">
+  <a href="https://alexandrepedrosaai.github.io/acs-wpp-interplanetary-ai-mesh/">
+    <img src="https://img.shields.io/badge/🚀%20LIVE%20DEMO-3D%20Interplanetary%20Signal%20Loop-0078d4?style=for-the-badge&logo=microsoftazure&logoColor=white" alt="Live Demo"/>
+  </a>
+  &nbsp;
+  <a href="https://alexandrepedrosaai.github.io/acs-wpp-interplanetary-ai-mesh/">
+    <img src="https://img.shields.io/badge/GitHub%20Pages-LIVE-25D366?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Pages"/>
+  </a>
+</p>
+
+> **🌐 [▶ View Full 3D Interactive Animation — Interplanetary Post-Quantum Signal Loop](https://alexandrepedrosaai.github.io/acs-wpp-interplanetary-ai-mesh/)**  
+> *Earth (WPP · ACS) → Azure Blockchain 2.0 → NASA · SpaceX Satellites → xAI xChat → Moon → Mars → back to Earth*  
+> *Gravitational wave post-quantum signal propagation — CRYSTALS-Kyber-1024 + Dilithium-5*
 
 ---
 
