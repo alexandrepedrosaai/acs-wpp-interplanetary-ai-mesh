@@ -19,7 +19,7 @@ The architecture creates a closed, self-improving loop:
 
 ## 3. Architecture Diagram
 
-```mermaid
+```.mermaid
 graph TD
     subgraph Generative AI Core (Azure)
         A[Azure Copilot / GPT-4o] -- "1. Generates Strategy" --> B(ACS Modulation Engine);
