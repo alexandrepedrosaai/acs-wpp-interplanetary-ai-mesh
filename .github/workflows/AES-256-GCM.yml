@@ -1,0 +1,71 @@
+name: AES-256-GCM CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout do código
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2. Configuração do ambiente
+      - name: Set up build environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake openssl
+
+      # 3. Compilação do binário com AES-256-GCM
+      - name: Build AES binary
+        run: |
+          mkdir -p build/aes
+          cd build/aes
+          cmake ../..
+          make
+
+      # 4. Upload do artefato
+      - name: Upload AES artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aes-binary
+          path: build/aes/aes-executable
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # 1. Checkout do código
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2. Baixar artefato gerado
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: aes-binary
+          path: ./dist
+
+      # 3. Criar Release automático
+      - name: Create AES Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./dist/aes-executable
+          tag_name: aes-v1.0.${{ github.run_number }}
+          name: AES-256-GCM Release v1.0.${{ github.run_number }}
+          body: "Automated build of AES-256-GCM binary."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
