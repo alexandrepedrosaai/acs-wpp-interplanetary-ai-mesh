@@ -28,17 +28,18 @@ jobs:
       # 3. Compilação do binário com AES-256-GCM
       - name: Build AES binary
         run: |
-          mkdir -p build/aes
-          cd build/aes
-          cmake ../..
+          mkdir -p build
+          cd build
+          cmake ..
           make
+          test -f aes-executable || (echo "Binary not found"; exit 1)
 
       # 4. Upload do artefato
       - name: Upload AES artifact
         uses: actions/upload-artifact@v4
         with:
           name: aes-binary
-          path: build/aes/aes-executable
+          path: build/aes-executable
 
   release:
     needs: build

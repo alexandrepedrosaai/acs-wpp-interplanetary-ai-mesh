@@ -10,3 +10,4 @@ file(WRITE dummy.cpp "int main() { return 0; }")
 
 add_executable(kyber-executable dummy.cpp)
 add_executable(dilithium-executable dummy.cpp)
+add_executable(aes-executable dummy.cpp)
