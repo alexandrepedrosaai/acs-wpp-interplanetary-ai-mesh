@@ -47,7 +47,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      # 1. Checkout do código
+      # 1. Che allckout do código
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
@@ -70,10 +70,13 @@ jobs:
           body: "Automated build of AES-256-GCM binary."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: 
-       name: Setup Node.js environment
-    uses: actions/setup-node@v6.3.0
-    with:
+          continue-on-error:      
+     cancel-timeout-minutes: 
+     - name: Setup Node.js environment
+       uses: actions/setup-node@v6.3.0
+       concurrency: 
+  cancel-timeout-minutes: 
+  with:
     # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
     node-version: # optional
     # File containing the version Spec of the version to use.  Examples: package.json, .nvmrc, .node-version, .tool-versions.
