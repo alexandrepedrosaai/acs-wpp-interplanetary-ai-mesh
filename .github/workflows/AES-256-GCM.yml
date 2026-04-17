@@ -41,7 +41,7 @@ jobs:
           name: aes-binary
           path: build/aes-executable
 
-  release:
+    release:
     needs: build
     runs-on: ubuntu-latest
     permissions:
