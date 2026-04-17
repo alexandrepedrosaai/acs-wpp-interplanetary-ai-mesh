@@ -1,3 +1,4 @@
+
 name: AES-256-GCM CI/CD
 
 on:
@@ -11,8 +12,8 @@ permissions:
 
 jobs:
   build:
-  runs-on: ubuntu-latest
-  steps:
+    runs-on: ubuntu-latest
+    steps:
       # 1. Checkout do código
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -24,7 +25,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential cmake openssl
-
       # 3. Compilação do binário com AES-256-GCM
       - name: Build AES binary
         run: |
@@ -33,22 +33,20 @@ jobs:
           cmake ..
           make
           test -f aes-executable || (echo "Binary not found"; exit 1)
-
       # 4. Upload do artefato
       - name: Upload AES artifact
         uses: actions/upload-artifact@v4
         with:
           name: aes-binary
           path: build/aes-executable
-          release:
-          needs: build
-          runs-on: ubuntu-latest
-          permissions:
-          contents: write
-          concurrency: 
-          
-      steps:
-      # 1. Che allckout do código
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # 1. Checkout do código
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
@@ -71,4 +69,3 @@ jobs:
           body: "Automated build of AES-256-GCM binary."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
