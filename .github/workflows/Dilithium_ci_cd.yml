@@ -13,6 +13,8 @@ jobs:
       # 1. Checkout do código
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       # 2. Configuração do ambiente
       - name: Set up build environment
@@ -20,10 +22,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential cmake
 
-      # 3. Compilação do binário Dilithium
+      # 3. Compilação do binário
       - name: Build Dilithium binary
         run: |
-          mkdir build
+          mkdir -p build
           cd build
           cmake ..
           make
@@ -40,17 +42,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Baixar artefato gerado
+      # 1. Checkout do código
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2. Baixar artefato gerado
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: dilithium-binary
           path: ./dist
 
-      # 2. Criar release automático
-      - name: Create GitHub Release
+      # 3. Criar Tag e Release automático
+      - name: Create Tag and Release
         uses: softprops/action-gh-release@v1
         with:
           files: ./dist/dilithium-executable
+          tag_name: dilithium-v1.0.${{ github.run_number }}
+          name: Dilithium Release v1.0.${{ github.run_number }}
+          body: "Automated build of Dilithium post-quantum binary."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
