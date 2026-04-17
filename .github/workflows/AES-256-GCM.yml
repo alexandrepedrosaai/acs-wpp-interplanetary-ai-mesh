@@ -55,15 +55,11 @@ jobs:
       # 2. Baixar artefato gerado
       - name: Download artifact
         uses: actions/download-artifact@v4
-        with:
-          name: aes-binary
-          path: ./dist
 
       # 3. Criar Release automático
       - name: Create AES Release
         uses: softprops/action-gh-release@v1
         with:
-          files: ./dist/aes-executable
           tag_name: aes-v1.0.${{ github.run_number }}
           name: AES-256-GCM Release v1.0.${{ github.run_number }}
           body: "Automated build of AES-256-GCM binary."
