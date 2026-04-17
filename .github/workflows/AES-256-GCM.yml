@@ -47,20 +47,20 @@ jobs:
     permissions:
       contents: write
     steps:
-      # 1. Che allckout do código
+      # 5. Che allckout do código
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      # 2. Baixar artefato gerado
+      # 6. Baixar artefato gerado
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: aes-binary
           path: ./dist
 
-      # 3. Criar Release automático
+      # 7. Criar Release automático
       - name: Create AES Release
         uses: softprops/action-gh-release@v1
         with:
@@ -101,5 +101,5 @@ jobs:
     # Used to specify an alternative mirror to download Node.js binaries from
         mirror: # optional
     # The token used as Authorization header when fetching from the mirror
-      mirror-token: # optional
+       mirror-token: # optional
 
