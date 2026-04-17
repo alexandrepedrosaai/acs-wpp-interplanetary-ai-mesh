@@ -1,0 +1,56 @@
+name: Kyber CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout do código
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Configuração do ambiente (exemplo: CMake ou cargo se for Rust)
+      - name: Set up build environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+
+      # 3. Compilação do binário
+      - name: Build Kyber binary
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
+
+      # 4. Upload do artefato
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kyber-binary
+          path: build/kyber-executable
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Baixar artefato gerado
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: kyber-binary
+          path: ./dist
+
+      # 2. Criar release automático
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./dist/kyber-executable
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
