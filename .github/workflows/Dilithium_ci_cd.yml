@@ -60,8 +60,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: ./dist/dilithium-executable
-          tag_name: dilithium-v1.0.${{ github.run_number }}
-          name: Dilithium Release v1.0.${{ github.run_number }}
+          tag_name: dilithium-v2.0.${{ github.run_number }}
+          name: Dilithium Release v2.0.${{ github.run_number }}
           body: "Automated build of Dilithium post-quantum binary."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
