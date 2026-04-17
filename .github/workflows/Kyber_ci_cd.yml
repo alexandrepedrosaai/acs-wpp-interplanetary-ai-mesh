@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+# Permissões explícitas para corrigir o erro 403
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,7 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Necessário para criar e dar push em tags
+          fetch-depth: 0
 
       # 2. Configuração do ambiente
       - name: Set up build environment
@@ -40,6 +45,8 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Permissão necessária para criar o Release
 
     steps:
       # 1. Checkout do código
