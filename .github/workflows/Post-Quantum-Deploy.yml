@@ -1,0 +1,118 @@
+name: Post-Quantum-Deploy CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-kyber:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up build environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+
+      - name: Build Kyber binary
+        run: |
+          mkdir -p build/kyber
+          cd build/kyber
+          cmake ../..
+          make
+
+      - name: Upload Kyber artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kyber-binary
+          path: build/kyber/kyber-executable
+
+  build-dilithium:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up build environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+
+      - name: Build Dilithium binary
+        run: |
+          mkdir -p build/dilithium
+          cd build/dilithium
+          cmake ../..
+          make
+
+      - name: Upload Dilithium artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dilithium-binary
+          path: build/dilithium/dilithium-executable
+
+  release:
+    needs: [build-kyber, build-dilithium]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Download Kyber artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: kyber-binary
+          path: ./dist
+
+      - name: Download Dilithium artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dilithium-binary
+          path: ./dist
+
+      - name: Create Unified Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./dist/kyber-executable
+            ./dist/dilithium-executable
+          tag_name: post-quantum-v1.0.${{ github.run_number }}
+          name: Post-Quantum Release v1.0.${{ github.run_number }}
+          body: "Automated build of Kyber and Dilithium post-quantum binaries."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
