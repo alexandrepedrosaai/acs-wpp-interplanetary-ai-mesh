@@ -101,15 +101,33 @@ jobs:
   deploy:
     needs: release
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Download Kyber artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: kyber-binary
+          path: ./dist
+
+      - name: Download Dilithium artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dilithium-binary
+          path: ./dist
+
+      - name: Copy index.html to dist
+        run: cp index.html ./dist/
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
       - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
