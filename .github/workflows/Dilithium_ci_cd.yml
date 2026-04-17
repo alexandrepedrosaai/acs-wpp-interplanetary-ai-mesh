@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+# Permissões explícitas para corrigir o erro 403
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,6 +45,8 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Permissão necessária para criar o Release
 
     steps:
       # 1. Checkout do código
@@ -60,8 +67,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: ./dist/dilithium-executable
-          tag_name: dilithium-v2.0.${{ github.run_number }}
-          name: Dilithium Release v2.0.${{ github.run_number }}
+          tag_name: dilithium-v1.0.${{ github.run_number }}
+          name: Dilithium Release v1.0.${{ github.run_number }}
           body: "Automated build of Dilithium post-quantum binary."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
