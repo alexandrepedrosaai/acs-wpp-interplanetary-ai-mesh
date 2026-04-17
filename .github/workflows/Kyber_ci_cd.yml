@@ -13,8 +13,10 @@ jobs:
       # 1. Checkout do código
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Necessário para criar e dar push em tags
 
-      # 2. Configuração do ambiente (exemplo: CMake ou cargo se for Rust)
+      # 2. Configuração do ambiente
       - name: Set up build environment
         run: |
           sudo apt-get update
@@ -23,7 +25,7 @@ jobs:
       # 3. Compilação do binário
       - name: Build Kyber binary
         run: |
-          mkdir build
+          mkdir -p build
           cd build
           cmake ..
           make
@@ -40,17 +42,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Baixar artefato gerado
+      # 1. Checkout do código
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2. Baixar artefato gerado
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: kyber-binary
           path: ./dist
 
-      # 2. Criar release automático
-      - name: Create GitHub Release
+      # 3. Criar Tag e Release automático
+      - name: Create Tag and Release
         uses: softprops/action-gh-release@v1
         with:
           files: ./dist/kyber-executable
+          tag_name: kyber-v1.0.${{ github.run_number }}
+          name: Kyber Release v1.0.${{ github.run_number }}
+          body: "Automated build of Kyber post-quantum binary."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
