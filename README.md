@@ -1,4 +1,4 @@
-<!-- ANIMATED BANNER — Post-Quantum Interplanetary Signal Loop -->
+<!-- ANIMATED BANNER — Post-Quantum Interplanetary Signal Loop -->. 
 <p align="center">
   <a href="https://alexandrepedrosaai.github.io/acs-wpp-interplanetary-ai-mesh/" target="_blank">
     <img src="Manusme/banner/interplanetary_animation.gif" alt="ACS-WPP Interplanetary AI Mesh — Post-Quantum Gravitational Signal Loop" width="100%"/>
